@@ -34,7 +34,7 @@ public class ServerHeartbeatHandler implements Runnable {
      *
      * @param info The server that a heartbeat was received for.
      */
-    public void heartbeatReceived(ServerInfo info, List playerList, boolean vipOnly) {
+    public void heartbeatReceived(ServerInfo info, List playerList) {
         ArrayList<String> players = new ArrayList<>();
         for (Object p : playerList) {
             if ((p instanceof String) == false) {
@@ -42,7 +42,7 @@ public class ServerHeartbeatHandler implements Runnable {
             }
             players.add((String) p);
         }
-        this.heartbeats.put(info, new Heartbeat(info, Calendar.getInstance().getTimeInMillis(), players, vipOnly));
+        this.heartbeats.put(info, new Heartbeat(info, Calendar.getInstance().getTimeInMillis(), players));
     }
 
     @Override

@@ -5,11 +5,10 @@ import net.md_5.bungee.api.config.ServerInfo;
 import java.util.List;
 
 public class Heartbeat {
-    public Heartbeat(ServerInfo info, Long timeHeartbeat, List<String> players, boolean vipOnly) {
+    public Heartbeat(ServerInfo info, Long timeHeartbeat, List<String> players) {
         this.info = info;
         this.timeHeartbeat = timeHeartbeat;
         this.players = players;
-        this.vipOnly = vipOnly;
     }
 
     /**
@@ -27,11 +26,6 @@ public class Heartbeat {
      */
     private List<String> players;
 
-    /**
-     * VIP Only
-     */
-    private boolean vipOnly;
-
     public ServerInfo getInfo() {
         return info;
     }
@@ -44,17 +38,12 @@ public class Heartbeat {
         return players;
     }
 
-    public boolean isVipOnly() {
-        return vipOnly;
-    }
-
     @Override
     public String toString() {
         return "Heartbeat{" +
                 "info=" + info +
                 ", timeHeartbeat=" + timeHeartbeat +
                 ", players=" + players +
-                ", vipOnly=" + vipOnly +
                 '}';
     }
 }

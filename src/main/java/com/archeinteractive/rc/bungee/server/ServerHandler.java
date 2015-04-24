@@ -30,20 +30,22 @@ public class ServerHandler {
         String name = (String) n;
         Number port = (Number) p;
         List list = (List) pl;
-        Boolean vipOnly = (Boolean) v;
 
         InetSocketAddress socketAddress = new InetSocketAddress(ip, port.intValue());
         ServerInfo serverInfo = ProxyServer.getInstance().getServerInfo(name);
+
         if (serverInfo != null) {
             if (serverInfo.getAddress().equals(socketAddress)) {
-                DynamicRegistrationModule.getInstance().serverHeartbeatHandler.heartbeatReceived(serverInfo, list, vipOnly);
+                DynamicRegistrationModule.getInstance().serverHeartbeatHandler.heartbeatReceived(serverInfo, list);
                 return;
             }
+
             disconnectAll(serverInfo);
         }
+
         ServerInfo info = ProxyServer.getInstance().constructServerInfo(name, socketAddress, "", false);
         ProxyServer.getInstance().getServers().put(name, info);
-        DynamicRegistrationModule.getInstance().serverHeartbeatHandler.heartbeatReceived(info, list, vipOnly);
+        DynamicRegistrationModule.getInstance().serverHeartbeatHandler.heartbeatReceived(info, list);
     }
 
     @NetTaskSubscribe(name = "disconnect", args = {"name"})
