@@ -67,7 +67,7 @@ public class NetHandler<T> {
         try {
             NetTaskSubscribe netTask = this.tasks.get(task.getTask().toLowerCase());
             if (netTask == null) {
-                RedisConnect.debug("UNKNOWN NetTask - NetTask is NULL");
+                RedisConnect.debug("UNKNOWN NetTask - Could not find task for " + task.getTask());
                 return true;
             }
 
