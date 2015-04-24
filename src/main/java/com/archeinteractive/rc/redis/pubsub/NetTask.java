@@ -1,5 +1,6 @@
 package com.archeinteractive.rc.redis.pubsub;
 
+import com.archeinteractive.rc.RedisConnect;
 import com.google.gson.Gson;
 import com.archeinteractive.rc.redis.RedisHandler;
 import redis.clients.jedis.Jedis;
@@ -13,7 +14,6 @@ public class NetTask {
     private String task;
 
     private transient String channel;
-    private transient RedisHandler handler;
 
     private NetTask(String name) {
         this.task = name;
@@ -29,9 +29,9 @@ public class NetTask {
         return this;
     }
 
-    public boolean send(String channel, RedisHandler handler) {
+    public boolean send(String channel) {
         this.channel = channel;
-        this.handler = handler;
+        RedisHandler handler = RedisConnect.getRedis();
 
         if (handler.isConnected()) {
             Jedis jedis = handler.getJedis();
@@ -58,10 +58,6 @@ public class NetTask {
 
     public void setTask(String task) {
         this.task = task;
-    }
-
-    public RedisHandler getHandler() {
-        return handler;
     }
 
     public String getChannel() {

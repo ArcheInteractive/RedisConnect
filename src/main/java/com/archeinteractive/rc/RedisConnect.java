@@ -9,7 +9,7 @@ public class RedisConnect {
         RedisConnect.connector = connector;
     }
 
-    public static RedisHandler getRedisHandler() {
+    public static RedisHandler getRedis() {
         return connector != null ? connector.getRedis() : null;
     }
 }
