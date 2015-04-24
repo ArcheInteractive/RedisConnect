@@ -1,0 +1,4 @@
+main: com.archeinteractive.rc.bungee.BungeeConnector
+name: RedisConnect
+version: ${version}
+author: 'Favorlock'

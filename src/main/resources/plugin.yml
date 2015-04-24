@@ -1,0 +1,5 @@
+main: com.archeinteractive.rc.bukkit.BukkitConnector
+name: RedisConnect
+description: 'Dynamically register servers to bungee without the need to modify the bungee config!'
+version: ${version}
+author: 'Favorlock'
