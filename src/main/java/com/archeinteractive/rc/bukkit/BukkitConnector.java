@@ -74,7 +74,7 @@ public class BukkitConnector extends JavaPlugin implements Connector {
                         .withArg("ip", Bukkit.getIp())
                         .withArg("port", Bukkit.getPort())
                         .withArg("players", players)
-                        .send("heartbeat", redis);
+                        .send("heartbeat");
             }
         }, 10 * 20, 10 * 20);
     }

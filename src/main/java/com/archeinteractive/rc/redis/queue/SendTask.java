@@ -1,5 +1,6 @@
 package com.archeinteractive.rc.redis.queue;
 
+import com.archeinteractive.rc.RedisConnect;
 import com.archeinteractive.rc.redis.pubsub.NetTask;
 
 public class SendTask extends Queue {
@@ -11,13 +12,13 @@ public class SendTask extends Queue {
 
     @Override
     public String process() {
-        task.send(task.getChannel(), task.getHandler());
+        task.send(task.getChannel());
         return "Task \"" + task.getTask() + "\" sent!";
     }
 
     @Override
     public boolean conditionsMet() {
-        return (task.getHandler().isConnected() && task.getHandler().getDispatch().isTaskRegistered(task));
+        return (RedisConnect.getRedis().isConnected() && RedisConnect.getRedis().getDispatch().isTaskRegistered(task));
     }
 }
 
