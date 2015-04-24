@@ -55,6 +55,11 @@ public class BungeeConnector extends Plugin implements Connector {
         return redis;
     }
 
+    @Override
+    public BaseConnectorSettings getBaseSettings() {
+        return connectorSettings;
+    }
+
     public DynamicRegistrationModule getDynamicRegistrationModule() {
         return dynamicRegistrationModule;
     }

@@ -1,5 +1,6 @@
 package com.archeinteractive.rc.redis.pubsub;
 
+import com.archeinteractive.rc.RedisConnect;
 import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Method;
@@ -66,10 +67,12 @@ public class NetHandler<T> {
         try {
             NetTaskSubscribe netTask = this.tasks.get(task.getTask().toLowerCase());
             if (netTask == null) {
+                RedisConnect.debug("UNKNOWN NetTask - NetTask is NULL");
                 return true;
             }
 
             if (task.getData().keySet().containsAll(Arrays.asList(netTask.args())) == false) {
+                RedisConnect.debug("Missing Arguments for NetTask: " + netTask.name() + " on channel: " + task.getChannel());
                 return false;
             }
 

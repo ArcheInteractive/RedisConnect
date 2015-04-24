@@ -12,4 +12,12 @@ public class RedisConnect {
     public static RedisHandler getRedis() {
         return connector != null ? connector.getRedis() : null;
     }
+
+    public static void debug(String ... lines) {
+        if (connector.getBaseSettings().isDebug()) {
+            for (String line : lines) {
+                connector.getLogger().info(line);
+            }
+        }
+    }
 }

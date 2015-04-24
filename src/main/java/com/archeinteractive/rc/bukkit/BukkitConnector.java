@@ -1,5 +1,6 @@
 package com.archeinteractive.rc.bukkit;
 
+import com.archeinteractive.rc.BaseConnectorSettings;
 import com.archeinteractive.rc.Connector;
 import com.archeinteractive.rc.RedisConnect;
 import com.archeinteractive.rc.redis.pubsub.NetTask;
@@ -18,7 +19,7 @@ import java.util.List;
 public class BukkitConnector extends JavaPlugin implements Connector {
     private static BukkitConnector instance;
 
-    private BukkitConnectorSettings dynamicSettings;
+    private BukkitConnectorSettings connectorSettings;
     private RedisHandler<JavaPlugin> redis;
     private BukkitTask task;
 
@@ -32,7 +33,7 @@ public class BukkitConnector extends JavaPlugin implements Connector {
     }
 
     private RedisHandler init(String file) {
-        return new RedisHandler<>(getLogger(), dynamicSettings.getRedis(), this, Bukkit.getScheduler()::runTaskAsynchronously);
+        return new RedisHandler<>(getLogger(), connectorSettings.getRedis(), this, Bukkit.getScheduler()::runTaskAsynchronously);
     }
 
     public void onDisable() {
@@ -46,17 +47,22 @@ public class BukkitConnector extends JavaPlugin implements Connector {
         }
 
         File file = new File(getDataFolder(), "settings.json");
-        dynamicSettings = JsonConfig.load(file, BukkitConnectorSettings.class);
+        connectorSettings = JsonConfig.load(file, BukkitConnectorSettings.class);
 
         if (!file.exists()) {
-            dynamicSettings.save(file);
+            connectorSettings.save(file);
         }
 
-        return dynamicSettings;
+        return connectorSettings;
     }
 
     public RedisHandler getRedis() {
         return redis;
+    }
+
+    @Override
+    public BaseConnectorSettings getBaseSettings() {
+        return connectorSettings;
     }
 
     @SuppressWarnings("deprecation")
@@ -70,7 +76,7 @@ public class BukkitConnector extends JavaPlugin implements Connector {
                 }
 
                 NetTask.withName("heartbeat")
-                        .withArg("name", "" + dynamicSettings.getName())
+                        .withArg("name", "" + connectorSettings.getName())
                         .withArg("ip", Bukkit.getIp())
                         .withArg("port", Bukkit.getPort())
                         .withArg("players", players)
@@ -83,7 +89,7 @@ public class BukkitConnector extends JavaPlugin implements Connector {
         return instance;
     }
 
-    public BukkitConnectorSettings getDynamicSettings() {
-        return dynamicSettings;
+    public BukkitConnectorSettings getConnectorSettings() {
+        return connectorSettings;
     }
 }
