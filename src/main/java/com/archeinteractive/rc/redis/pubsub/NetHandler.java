@@ -55,7 +55,8 @@ public class NetHandler<T> {
                 this.tasks.put(task.name().toLowerCase(), task);
                 this.handlers.put(task, handler);
             } else {
-                handler = this.handlers.get(task);
+                logger.info("Task: " + task.name() + " already registered");
+                return;
             }
 
             logger.info("Registered Task: " + task.name());
