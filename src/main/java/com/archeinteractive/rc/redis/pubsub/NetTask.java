@@ -12,8 +12,7 @@ public class NetTask {
     private static final Gson gson = new Gson();
     private Map<String, Object> data;
     private String task;
-
-    private transient String channel;
+    private String channel;
 
     private NetTask(String name) {
         this.task = name;
