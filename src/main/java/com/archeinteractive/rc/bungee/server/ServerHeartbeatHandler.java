@@ -70,10 +70,10 @@ public class ServerHeartbeatHandler implements Runnable {
      * Get players online
      */
     public static Integer getPlayersOnline() {
-        List<ServerInfo> infos = new ArrayList<>(DynamicRegistrationModule.getInstance().serverHeartbeatHandler.heartbeats.asMap().keySet());
+        List<Heartbeat> heartbeats = new ArrayList<>(DynamicRegistrationModule.getInstance().serverHeartbeatHandler.heartbeats.asMap().values());
         Integer count = 0;
-        for (ServerInfo info : infos) {
-            count += info.getPlayers().size();
+        for (Heartbeat heartbeat : heartbeats) {
+            count += heartbeat.getPlayers().size();
         }
         return count;
     }
