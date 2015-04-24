@@ -1,5 +1,6 @@
 package com.archeinteractive.rc.bungee.server;
 
+import com.archeinteractive.rc.RedisConnect;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -72,5 +73,7 @@ public class ServerHandler {
         for (ProxiedPlayer player : info.getPlayers()) {
             player.disconnect("The server is currently unavailable, please try again soon!");
         }
+
+        RedisConnect.debug("Disconnecting all players from: " + info.getName());
     }
 }

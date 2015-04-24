@@ -1,5 +1,6 @@
 package com.archeinteractive.rc.bungee.server;
 
+import com.archeinteractive.rc.RedisConnect;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.md_5.bungee.api.ProxyServer;
@@ -54,6 +55,7 @@ public class ServerHeartbeatHandler implements Runnable {
                 ProxyServer.getInstance().getServers().remove(info.getName());
                 ServerHandler.disconnectAll(info);
                 this.heartbeats.invalidate(info);
+                RedisConnect.debug("Heartbeat was not found for: " + info.getName() + ". Invalidating server.");
             }
         }
         schedule();
