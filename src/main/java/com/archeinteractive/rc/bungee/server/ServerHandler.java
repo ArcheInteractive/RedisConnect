@@ -11,19 +11,17 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ServerHandler {
-    @NetTaskSubscribe(name = "heartbeat", args = {"name", "ip", "port", "players", "vipOnly"})
+    @NetTaskSubscribe(name = "heartbeat", args = {"name", "ip", "port", "players"})
     public void onHeartbeat(HashMap<String, Object> args) {
         Object i = args.get("ip");
         Object n = args.get("name");
         Object p = args.get("port");
         Object pl = args.get("players");
-        Object v = args.get("vipOnly");
 
         if ((i instanceof String) == false
                 || (n instanceof String) == false
                 || (p instanceof Number) == false
-                || (pl instanceof List) == false
-                || (v instanceof Boolean) == false) {
+                || (pl instanceof List) == false) {
             return;
         }
 
