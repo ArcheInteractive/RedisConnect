@@ -16,7 +16,7 @@ public class ServerHeartbeatHandler implements Runnable {
     /**
      * Stores previous heartbeats.
      */
-    private Cache<ServerInfo, Heartbeat> heartbeats = CacheBuilder.newBuilder().expireAfterWrite(30, TimeUnit.SECONDS).build();
+    private Cache<ServerInfo, Heartbeat> heartbeats = CacheBuilder.newBuilder().expireAfterWrite(BungeeConnector.getInstance().getSettings().getHeartbeatExpire(), TimeUnit.SECONDS).build();
 
     /**
      * Stores the current task.

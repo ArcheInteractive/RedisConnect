@@ -14,7 +14,7 @@ public class RedisConnect {
     }
 
     public static void debug(String ... lines) {
-        if (connector.getBaseSettings().isDebug()) {
+        if (connector.getSettings().isDebug()) {
             for (String line : lines) {
                 connector.getLogger().info(line);
             }

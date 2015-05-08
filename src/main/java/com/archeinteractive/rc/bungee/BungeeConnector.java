@@ -14,7 +14,7 @@ import java.io.File;
 public class BungeeConnector extends Plugin implements Connector {
     private static BungeeConnector instance;
 
-    private BaseConnectorSettings connectorSettings;
+    private BungeeConnectorSettings connectorSettings;
     private RedisHandler<Plugin> redis;
     private DynamicRegistrationModule dynamicRegistrationModule;
 
@@ -42,11 +42,8 @@ public class BungeeConnector extends Plugin implements Connector {
         }
 
         File file = new File(getDataFolder(), "settings.json");
-        connectorSettings = JsonConfig.load(file, BaseConnectorSettings.class);
-
-        if (!file.exists()) {
-            connectorSettings.save(file);
-        }
+        connectorSettings = JsonConfig.load(file, BungeeConnectorSettings.class);
+        connectorSettings.save(file);
 
         return connectorSettings;
     }
@@ -56,7 +53,7 @@ public class BungeeConnector extends Plugin implements Connector {
     }
 
     @Override
-    public BaseConnectorSettings getBaseSettings() {
+    public BungeeConnectorSettings getSettings() {
         return connectorSettings;
     }
 

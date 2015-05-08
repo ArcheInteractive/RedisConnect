@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 public interface Connector {
     public RedisHandler getRedis();
 
-    public BaseConnectorSettings getBaseSettings();
+    public <T extends BaseConnectorSettings> T getSettings();
 
     public Logger getLogger();
 }

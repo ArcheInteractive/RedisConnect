@@ -1,6 +1,5 @@
 package com.archeinteractive.rc.bukkit;
 
-import com.archeinteractive.rc.BaseConnectorSettings;
 import com.archeinteractive.rc.Connector;
 import com.archeinteractive.rc.RedisConnect;
 import com.archeinteractive.rc.redis.pubsub.NetTask;
@@ -48,10 +47,7 @@ public class BukkitConnector extends JavaPlugin implements Connector {
 
         File file = new File(getDataFolder(), "settings.json");
         connectorSettings = JsonConfig.load(file, BukkitConnectorSettings.class);
-
-        if (!file.exists()) {
-            connectorSettings.save(file);
-        }
+        connectorSettings.save(file);
 
         return connectorSettings;
     }
@@ -61,7 +57,7 @@ public class BukkitConnector extends JavaPlugin implements Connector {
     }
 
     @Override
-    public BaseConnectorSettings getBaseSettings() {
+    public BukkitConnectorSettings getSettings() {
         return connectorSettings;
     }
 
@@ -82,14 +78,10 @@ public class BukkitConnector extends JavaPlugin implements Connector {
                         .withArg("players", players)
                         .send("heartbeat");
             }
-        }, 10 * 20, 10 * 20);
+        }, connectorSettings.getHeartbeatInterval() * 20, connectorSettings.getHeartbeatInterval() * 20);
     }
 
     public static BukkitConnector getInstance() {
         return instance;
-    }
-
-    public BukkitConnectorSettings getConnectorSettings() {
-        return connectorSettings;
     }
 }
