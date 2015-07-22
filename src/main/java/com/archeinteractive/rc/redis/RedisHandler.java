@@ -140,7 +140,7 @@ public class RedisHandler<T> {
     }
 
     private void registerChannel0(String channel) {
-        task.accept(plugin, () -> {
+        Runnable runnable = () -> {
             Jedis jedis = RedisHandler.this.getJedis();
 
             if (jedis == null) {
@@ -150,7 +150,13 @@ public class RedisHandler<T> {
             RedisHandler.this.dispatch.addChannel(channel);
             jedis.subscribe(RedisHandler.this.dispatch.getDelegate(), channel);
             returnRedis(jedis);
-        });
+        };
+
+        if (task != null) {
+            task.accept(plugin, runnable);
+        } else {
+            executorService.execute(runnable);
+        }
     }
 
     public void queueNetTaskSend(NetTask netTask) {
