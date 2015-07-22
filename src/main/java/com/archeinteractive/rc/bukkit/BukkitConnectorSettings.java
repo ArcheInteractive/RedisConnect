@@ -6,6 +6,7 @@ public class BukkitConnectorSettings extends BaseConnectorSettings {
     private String name = "server1";
     private int heartbeatInterval = 5;
 
+    @Override
     public String getName() {
         return name;
     }

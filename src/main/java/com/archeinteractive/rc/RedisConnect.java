@@ -20,4 +20,12 @@ public class RedisConnect {
             }
         }
     }
+
+    public static Connector getConnector() {
+        return connector;
+    }
+
+    public static BaseConnectorSettings getConnectorSettings() {
+        return connector == null ? null : connector.getSettings();
+    }
 }

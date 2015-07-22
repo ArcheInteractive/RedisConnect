@@ -14,4 +14,8 @@ public class BaseConnectorSettings extends JsonConfig {
     public boolean isDebug() {
         return debug;
     }
+
+    public String getName() {
+        return null;
+    }
 }
