@@ -71,13 +71,14 @@ public class BukkitConnector extends JavaPlugin implements Connector {
                     players.add(player.getName());
                 }
 
+                String ip = (Bukkit.getIp() == null || Bukkit.getIp().isEmpty()) ? "localhost" : Bukkit.getIp();
                 NetTask.withName("heartbeat")
                         .withArg("name", "" + connectorSettings.getName())
-                        .withArg("ip", Bukkit.getIp())
+                        .withArg("ip", ip)
                         .withArg("port", Bukkit.getPort())
                         .withArg("players", players)
                         .send("heartbeat");
-                RedisConnect.debug("Sending heartbeat from " + connectorSettings.getName(), "with ip " + Bukkit.getIp());
+                RedisConnect.debug("Sending heartbeat from " + connectorSettings.getName(), "with ip " + ip + " and port " + Bukkit.getPort());
             }
         }, connectorSettings.getHeartbeatInterval() * 20, connectorSettings.getHeartbeatInterval() * 20);
     }
