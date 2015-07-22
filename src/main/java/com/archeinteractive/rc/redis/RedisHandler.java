@@ -1,5 +1,6 @@
 package com.archeinteractive.rc.redis;
 
+import com.archeinteractive.rc.RedisConnect;
 import com.archeinteractive.rc.redis.pubsub.NetHandler;
 import com.archeinteractive.rc.redis.pubsub.NetTask;
 import com.archeinteractive.rc.redis.queue.*;
@@ -39,9 +40,9 @@ public class RedisHandler<T> {
     }
 
     public void init() {
-        logger.info("Connecting to Redis server...");
-
+        RedisConnect.debug("Scheduling connection to Redis server.");
         task.accept(plugin, () -> {
+            logger.info("Connecting to Redis server...");
             pool = getJedisPool();
             Jedis rsc = null;
 
