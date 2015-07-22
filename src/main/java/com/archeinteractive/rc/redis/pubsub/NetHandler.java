@@ -8,14 +8,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
 import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 
 public class NetHandler<T> {
     protected Logger logger;
     protected NetDelegate delegate;
-    private T plugin;
-    private BiConsumer<? super T, Runnable> task;
     private Map<String, NetTaskSubscribe> tasks;
     private Map<NetTaskSubscribe, NetRegisteredTask> handlers;
     protected CopyOnWriteArrayList<String> channels;
@@ -23,13 +22,21 @@ public class NetHandler<T> {
     public NetHandler(Logger logger, T plugin, BiConsumer<? super T, Runnable> task) {
         this.logger = logger;
         this.delegate = new NetDelegate(this);
-        this.plugin = plugin;
-        this.task = task;
         this.tasks = new HashMap<>();
         this.handlers = new HashMap<>();
         this.channels = new CopyOnWriteArrayList<>();
 
         task.accept(plugin, delegate);
+    }
+
+    public NetHandler(Logger logger, ExecutorService service) {
+        this.logger = logger;
+        this.delegate = new NetDelegate(this);
+        this.tasks = new HashMap<>();
+        this.handlers = new HashMap<>();
+        this.channels = new CopyOnWriteArrayList<>();
+
+        service.execute(delegate);
     }
 
     public void registerTasks(Object o) {

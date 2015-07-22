@@ -1,13 +1,13 @@
 package com.archeinteractive.rc;
 
-import com.archeinteractive.rc.redis.RediSettings;
+import com.archeinteractive.rc.redis.RedisSettings;
 import com.archeinteractive.rc.utils.JsonConfig;
 
 public class BaseConnectorSettings extends JsonConfig {
-    private RediSettings redis = new RediSettings("localhost", 6379, null, -1);
+    private RedisSettings redis = new RedisSettings("localhost", 6379, null, -1);
     private boolean debug = false;
 
-    public RediSettings getRedis() {
+    public RedisSettings getRedis() {
         return redis;
     }
 

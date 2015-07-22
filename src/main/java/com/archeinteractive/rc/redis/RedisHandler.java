@@ -10,26 +10,38 @@ import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 
 public class RedisHandler<T> {
     private static RedisHandler instance;
     private Logger logger;
-    private RediSettings settings;
+    private RedisSettings settings;
     private T plugin;
-    private BiConsumer<? super T, Runnable> task;
+    private ExecutorService executorService = null;
+    private BiConsumer<? super T, Runnable> task = null;
     private JedisPool pool;
     private NetHandler dispatch;
     private boolean connected = false;
     private CopyOnWriteArrayList<Queue> pending = new CopyOnWriteArrayList<>();
     private QueueConsumer consumer;
 
-    public RedisHandler(Logger logger, RediSettings settings, T plugin, BiConsumer<? super T, Runnable> task) {
+    public RedisHandler(Logger logger, RedisSettings settings, T plugin, BiConsumer<? super T, Runnable> task) {
         this.logger = logger;
         this.settings = settings;
         this.plugin = plugin;
         this.task = task;
+        this.consumer = new QueueConsumer(logger, pending);
+        RedisHandler.instance = this;
+        init();
+    }
+
+    public RedisHandler(Logger logger, RedisSettings settings) {
+        this.logger = logger;
+        this.settings = settings;
+        this.executorService = Executors.newFixedThreadPool(5);
         this.consumer = new QueueConsumer(logger, pending);
         RedisHandler.instance = this;
         init();
@@ -41,7 +53,7 @@ public class RedisHandler<T> {
 
     public void init() {
         RedisConnect.debug("Scheduling connection to Redis server.");
-        task.accept(plugin, () -> {
+        Runnable runnable = () -> {
             logger.info("Connecting to Redis server...");
             pool = getJedisPool();
             Jedis rsc = null;
@@ -69,10 +81,21 @@ public class RedisHandler<T> {
                     returnRedis(rsc);
                 }
             }
-        });
+        };
 
-        dispatch = new NetHandler(logger, plugin, task);
-        task.accept(plugin, consumer);
+        if (task != null) {
+            task.accept(plugin, runnable);
+        } else {
+            executorService.execute(runnable);
+        }
+
+        dispatch = task != null ? new NetHandler(logger, plugin, task) : new NetHandler(logger, executorService);
+
+        if (task != null) {
+            task.accept(plugin, consumer);
+        } else {
+            executorService.execute(consumer);
+        }
     }
 
     private JedisPool getJedisPool() {

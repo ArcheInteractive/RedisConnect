@@ -32,7 +32,7 @@ public class BukkitConnector extends JavaPlugin implements Connector {
     }
 
     private RedisHandler init(String file) {
-        return new RedisHandler<>(getLogger(), connectorSettings.getRedis(), this, Bukkit.getScheduler()::runTaskAsynchronously);
+        return new RedisHandler<>(getLogger(), connectorSettings.getRedis());
     }
 
     public void onDisable() {
