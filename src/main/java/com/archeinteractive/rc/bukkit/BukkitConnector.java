@@ -77,6 +77,7 @@ public class BukkitConnector extends JavaPlugin implements Connector {
                         .withArg("port", Bukkit.getPort())
                         .withArg("players", players)
                         .send("heartbeat");
+                RedisConnect.debug("Sending heartbeat from " + connectorSettings.getName(), "with ip " + Bukkit.getIp());
             }
         }, connectorSettings.getHeartbeatInterval() * 20, connectorSettings.getHeartbeatInterval() * 20);
     }

@@ -33,6 +33,7 @@ public class ServerHandler {
         InetSocketAddress socketAddress = new InetSocketAddress(ip, port.intValue());
         ServerInfo serverInfo = ProxyServer.getInstance().getServerInfo(name);
 
+        RedisConnect.debug("Received heartbeat from " + name, "with ip " + ip);
         if (serverInfo != null) {
             if (serverInfo.getAddress().equals(socketAddress)) {
                 DynamicRegistrationModule.getInstance().serverHeartbeatHandler.heartbeatReceived(serverInfo, list);
