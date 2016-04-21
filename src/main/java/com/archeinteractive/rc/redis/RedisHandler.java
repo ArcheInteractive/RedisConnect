@@ -100,7 +100,7 @@ public class RedisHandler<T> {
 
     private JedisPool getJedisPool() {
         JedisPoolConfig config = new JedisPoolConfig();
-        config.setMaxActive(settings.getMaxConnections());
+        config.setMaxTotal(settings.getMaxConnections());
 
         if (settings.getPassword() == null || settings.getPassword().equals("")) {
             return RedisHandler.this.pool = new JedisPool(config, settings.getHost(), settings.getPort(), 0);
